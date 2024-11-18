@@ -4,6 +4,8 @@ import importlib.util
 import random
 import string
 import sys
+import coverage
+import os
 from pathlib import Path
 
 def load_module(file_path):
@@ -135,17 +137,49 @@ def randoop_test_generator(classes, sequence_number=2):
                 sequences.append(cur_seq.copy())
             error_prone_cases.append(cur_seq + [(cls_name, method_name, args, str(e))])
             cur_seq = []
-
     return sequences, error_prone_cases, storage
-def write_regression_tests(tot_sequences, module_name):
+
+def print_coverage(test_file, actual_file):
+    """
+    Print coverage data for the actual file while running the test file.
+    """
+    cov = coverage.Coverage(branch=True, source=[str(Path(actual_file).resolve().parent)])
+    cov.start()
+
+    try:
+        # Use pytest to run the test file
+        import pytest
+        pytest.main([test_file])
+    finally:
+        # Stop and save coverage data
+        cov.stop()
+        cov.save()
+
+    # Generate a coverage report focused on the actual file
+    print(f"\nCoverage for {actual_file} while running {test_file}:\n")
+    cov.report([str(Path(actual_file).resolve())])
+
+    # Analyze the actual file for detailed coverage
+    _, statements, missing, branches, partial_branches = cov.analysis2(str(Path(actual_file).resolve()))
+
+    # Print detailed coverage
+    print(f"Lines covered: {len(statements) - len(missing)}/{len(statements)}")
+    print(f"Branches covered: {len(branches) - len(partial_branches)}/{len(branches)}\n")
+
+def write_regression_tests(tot_sequences, module_name, file_path):
+    """
+    Write regression tests to a file, ensuring proper imports and test generation.
+    """
     test_file_name = "regression_tests.py"
+    file_stem = Path(file_path).stem  # Get the file name without extension
+
     with open(test_file_name, "w") as f:
         f.write("import pytest\n")
-        f.write(f"from {module_name} import *\n\n")
+        f.write(f"from {file_stem} import *\n\n")  # Import using the correct module name
+
         for sequences in tot_sequences:
-            print("SEquence ", sequences)
             for idx, (cls_name, method_name, args, result) in enumerate(sequences):
-                f.write(f"def test_{method_name}_{idx}():\n")
+                f.write(f"def test_{cls_name}_{method_name}_{idx}():\n")
                 f.write(f"    instance = {cls_name}()\n")
                 args_str = ", ".join(
                     f"{repr(arg) if isinstance(arg, (int, float, str)) else f'{arg.__class__.__name__}()'}"
@@ -158,24 +192,22 @@ def write_regression_tests(tot_sequences, module_name):
                     f.write(f"    assert result == {repr(result)}\n\n")
                 else:
                     f.write(f"    assert isinstance(result, {result.__class__.__name__})\n\n")
-
     print(f"Regression tests written to {test_file_name}")
+    print_coverage(test_file_name, file_path)
+
 
 def main():
     parser = argparse.ArgumentParser(description="Randoop-style test generator for Python classes")
     parser.add_argument("file", type=str, help="Path to the Python file with class definitions")
-    parser.add_argument("sequence_length", type=str, help="Number of Time the Sequence must be tried to extend")
+    parser.add_argument("sequence_length", type=str, help="Number of times to extend the sequence")
     args = parser.parse_args()
 
     file_path = Path(args.file)
     if not file_path.is_file():
         print(f"Error: The file '{file_path}' does not exist.")
         sys.exit(1)
-    sequence_length = int(args.sequence_length)
-    if not sequence_length:
-        sequence_length = 2
-    print("Seq Len", sequence_length)
 
+    sequence_length = int(args.sequence_length) if args.sequence_length.isdigit() else 2
     module = load_module(file_path)
     classes = get_classes(module)
 
@@ -191,11 +223,12 @@ def main():
             print(f"{cls_name}.{method_name}({args}) -> {result}")
 
     print("\nError-Prone Sequences:")
-    for each_error_prone_cases in error_prone_cases:
-        for cls_name, method_name, args, error in each_error_prone_cases:
+    for each_error_prone_case in error_prone_cases:
+        for cls_name, method_name, args, error in each_error_prone_case:
             print(f"{cls_name}.{method_name}({args}) -> Error: {error}")
 
-    write_regression_tests(sequences, module.__name__)
+    write_regression_tests(sequences, module.__name__, file_path)
+
 
 if __name__ == "__main__":
     main()
