@@ -6,7 +6,7 @@ setup(
     packages=find_packages(),
     entry_points={
         "console_scripts": [
-            "randoop-cli = randoop_cli.cli:main",
+            "randoop-cli = randoop_cli.clinew:main",
         ]
     },
     install_requires=[],
