@@ -7,5 +7,5 @@
 
 ## Execution
 - cd into the location of the file for which the test cases are required
-- `randoop-cli <filename>.py`
+- `randoop-cli -k=number_of_sequences -f=<filename>.py`
 - There will be separate test files for each class in the file and there will a regression test case file generated
