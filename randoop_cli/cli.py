@@ -90,6 +90,34 @@ def generate_storage_data_structure(classes):
 
     return storage
 
+def create_instance_of_class(cls):
+    """
+    Dynamically creates an instance of a class by populating its __init__ parameters with random values.
+    """
+    try:
+        init_signature = inspect.signature(cls.__init__)
+        init_params = init_signature.parameters
+        # Skip 'self' and generate random values for other parameters
+        args = {}
+        for param_name, param in init_params.items():
+            if param_name in ["self", "args", "kwargs"]:
+                continue
+            param_type = param.annotation if param.annotation != inspect.Parameter.empty else None
+            # Generate random value for the parameter
+            if param.default == inspect.Parameter.empty:  # Required parameter
+                args[param_name] = generate_random_primitive(param_type)
+            else:  # Optional parameter, randomly decide to use default or override
+                args[param_name] = (
+                    generate_random_primitive(param_type) if random.choice([True, False]) else param.default
+                )
+        if not args:
+            return cls()
+        # Instantiate the class with the generated arguments
+        return cls(**args)
+    except Exception as e:
+        print(f"Error creating instance of {cls.__name__}: {e}")
+        return None
+
 
 # Generate random tests for the provided classes
 def randoop_test_generator(classes, sequence_number=2):
@@ -103,7 +131,7 @@ def randoop_test_generator(classes, sequence_number=2):
         cls_instance = (
             random.choice(storage[cls_name]["instance"])
             if storage[cls_name]["instance"] and random.choice([True, False])
-            else cls()
+            else create_instance_of_class(cls)
         )
         storage[cls_name]["instance"].append(cls_instance)
 
