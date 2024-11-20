@@ -226,16 +226,18 @@ def write_regression_tests(tot_sequences, module_name, file_path):
 
 def main():
     parser = argparse.ArgumentParser(description="Randoop-style test generator for Python classes")
-    parser.add_argument("file", type=str, help="Path to the Python file with class definitions")
-    parser.add_argument("sequence_length", type=str, help="Number of times to extend the sequence")
+    parser.add_argument("-k", type=int, default=2, help="Number of times to extend the sequence (default: 2)")
+    parser.add_argument("-f", type=str, required=True, help="Path to the Python file with class definitions")
+    #parser.add_argument("sequence_length", type=str, help="Number of times to extend the sequence")
     args = parser.parse_args()
 
-    file_path = Path(args.file)
+    file_path = Path(args.f)
     if not file_path.is_file():
         print(f"Error: The file '{file_path}' does not exist.")
         sys.exit(1)
 
-    sequence_length = int(args.sequence_length) if args.sequence_length.isdigit() else 2
+    #sequence_length = int(args.sequence_length) if args.sequence_length.isdigit() else 2
+    sequence_length = args.k
     module = load_module(file_path)
     classes = get_classes(module)
 
