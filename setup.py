@@ -6,10 +6,12 @@ setup(
     packages=find_packages(),
     entry_points={
         "console_scripts": [
-            "randoop-cli = randoop_cli.clinew:main",
+            "randoop-cli = randoop_cli.cli:main",
         ]
     },
-    install_requires=[],
-    author="Your Name",
+    install_requires=[
+
+    ],
+    author="Team8",
     description="Randoop-style test generator for Python classes",
 )

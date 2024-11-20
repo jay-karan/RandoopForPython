@@ -1,0 +1,5 @@
+click==8.1.7
+coverage==7.6.7
+pytest==8.3.3
+rich==13.9.4
+tqdm==4.67.0

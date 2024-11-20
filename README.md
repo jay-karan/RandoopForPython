@@ -64,39 +64,8 @@ With features like **dynamic method inspection**, **random data generation**, an
 Ensure you have the following Python packages installed:
 
 ```bash
-pip install rich tqdm pytest
+pip install rich tqdm pytest coverage
 ```
-
-#### **Steps to Run**
-
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/jay-karan/RandoopForPython.git
-   cd RandoopForPython
-   ```
-
-2. **Prepare Your Python Module**:
-   Place the Python file containing your classes in the same directory (e.g., `example_classes.py`).
-
-3. **Run the Tool**:
-   ```bash
-   python test_generator_cli.py -f <path-to-python-file> -k <sequence-length>
-   ```
-
-   - **`-f`**: Path to the Python file containing class definitions.
-   - **`-k`**: Number of test sequences to generate (default is `2`).
-
-4. **Output**:
-   - Generated test sequences and their outcomes are displayed in the console.
-   - Regression tests are saved in `regression_tests.py`.
-
-#### **Example**
-
-```bash
-python test_generator_cli.py -f example_classes.py -k 3
-```
-
----
 
 ### **Installation and Usage with CLI**
 
