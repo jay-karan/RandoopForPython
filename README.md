@@ -8,6 +8,8 @@ This project implements a Python-based tool for generating **Randoop-style tests
 
 With features like **dynamic method inspection**, **random data generation**, and **error handling for invalid cases**, this tool is ideal for automating the testing process in Python.
 
+![Randoop CLI in Action](assets/calculator_output.png)
+
 ---
 
 ### **Features**
