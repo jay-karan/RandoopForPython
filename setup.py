@@ -9,9 +9,7 @@ setup(
             "randoop-cli = randoop_cli.cli:main",
         ]
     },
-    install_requires=[
-
-    ],
+    install_requires=[],
     author="Team8",
     description="Randoop-style test generator for Python classes",
 )

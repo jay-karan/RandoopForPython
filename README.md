@@ -182,6 +182,51 @@ With the CLI installed, integrating Randoop-style test generation into your deve
 ```
 
 ---
+### **Example Execution (Banking Application)**
+
+Follow the steps below to execute the tool for generating tests for a hypothetical `BankingApplication.py`:
+
+#### 1. Clone the Repository
+First, clone the repository to your local machine using:
+
+```bash
+git clone https://github.com/jay-karan/RandoopForPython.git
+```
+
+#### 2. Navigate to the Project Directory
+Move into the project's directory:
+
+```bash
+cd RandoopForPython
+```
+
+#### 3. Install the Tool
+Install the tool and its dependencies using `pip`:
+
+```bash
+pip install rich tqdm pytest coverage
+pip install .
+```
+
+#### 4. Run the Randoop-Style Test Generator
+Execute the CLI tool for your `BankingApplication.py` file. The `-f` flag specifies the Python file with class definitions, and the `-k` flag specifies the number of sequence generations:
+
+```bash
+randoop-cli -f BankingApplication.py -k 15
+```
+
+#### 5. Observe the Output
+The tool will generate successful test sequences and identify any error-prone sequences. Below is an example of what you might see:
+![Randoop CLI in Action fot Banking Application](assets/calculator_output.png)
+
+#### 6. Run Generated Regression Tests
+You can now run the generated `regression_tests.py` using `pytest` to verify correctness:
+
+```bash
+pytest regression_tests.py
+```
+
+---
 
 ### **Contributing**
 
