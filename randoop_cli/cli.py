@@ -54,20 +54,20 @@ def main(sequence_length, file_path):
     sequences, error_prone_cases, storage = randoop_test_generator(classes, sequence_length)
 
     # Display Successful Sequences
-    console.print("\n[bold green]Successful Sequences:[/bold green]")
-    for sequence in sequences:
-        for cls_name, method_name, args, result in sequence:
-            console.print(f"[green]{cls_name}.{method_name}({args}) -> {result}[/green]")
+    # console.print("\n[bold green]Successful Sequences:[/bold green]")
+    # for sequence in sequences:
+    #     for cls_name, method_name, args, result in sequence:
+    #         console.print(f"[green]{cls_name}.{method_name}({args}) -> {result}[/green]")
 
-    # Display Error-Prone Sequences
-    console.print("\n[bold yellow]Error-Prone Sequences:[/bold yellow]")
-    for each_error_prone_case in error_prone_cases:
-        for cls_name, method_name, args, error in each_error_prone_case:
-            console.print(f"[yellow]{cls_name}.{method_name}({args}) -> Error: {error}[/yellow]")
+    # # Display Error-Prone Sequences
+    # console.print("\n[bold yellow]Error-Prone Sequences:[/bold yellow]")
+    # for each_error_prone_case in error_prone_cases:
+    #     for cls_name, method_name, args, error in each_error_prone_case:
+    #         console.print(f"[yellow]{cls_name}.{method_name}({args}) -> Error: {error}[/yellow]")
 
     # Simulate loading for writing regression tests
-    simulate_loading("Writing regression tests")
-    write_regression_tests(sequences, module.__name__, file_path)
+    # simulate_loading("Writing regression tests")
+    # write_regression_tests(sequences, module.__name__, file_path)
 
     console.print("[bold green]All tasks completed successfully![/bold green]")
 
