@@ -2,7 +2,7 @@ import click
 from pathlib import Path
 from .module_loader import load_module
 from .class_inspection import get_classes
-from .test_generator import randoop_test_generator, write_regression_tests
+from .test_generator import randoop_test_generator, write_test_cases
 import time
 from rich.console import Console
 from rich.progress import Progress
@@ -44,15 +44,22 @@ def main(sequence_length, file_path):
     # Simulate loading for class inspection
     simulate_loading("Inspecting classes")
     classes = get_classes(module)
-
+    class_name_map = {str(cls): name for name, cls in classes}
     if not classes:
         console.print(f"[bold red]No classes found in '{file_path}'.[/bold red]")
         exit(1)
 
     # Simulate loading for test generation
     simulate_loading("Generating Random tests")
-    sequences, error_prone_cases, storage = randoop_test_generator(classes, sequence_length)
-
+    sequences, error_prone_cases, storage, instance_creation_data  = randoop_test_generator(classes, sequence_length)
+    # Write the tests to a file
+    write_test_cases(
+        sequences=sequences,
+        storage=storage,
+        module_name=module.__name__,
+        file_path=file_path,
+        instance_creation_data=instance_creation_data
+    )
     # Display Successful Sequences
     # console.print("\n[bold green]Successful Sequences:[/bold green]")
     # for sequence in sequences:
