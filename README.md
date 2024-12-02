@@ -194,10 +194,7 @@ randoop-cli -f CalculatorApplication.py -k 10
 The tool will generate successful test sequences and identify any error-prone sequences. Below is an example of what you might see, followed by a live video demo:
 ![Randoop CLI in Action for Calculator Application](assets/calculator_output.png)
 
-<video controls>
-  <source src="assets/calculator_demo.mp4">
-  Video Demo of Calculator Application.
-</video>
+![GitHub Application Demo](assets/calculator_demo.gif)
 
 ---
 
@@ -238,10 +235,7 @@ randoop-cli -f BankingApplication.py -k 10
 The tool will generate successful test sequences and identify any error-prone sequences. Below is an example of what you might see, followed by a live video demo:
 ![Randoop CLI in Action for Banking Application ](assets/banking_output.png)
 
-<video controls>
-  <source src="assets/banking_demo.mp4">
-  Video Demo of Banking Application.
-</video>
+![GitHub Application Demo](assets/banking_demo.gif)
 
 ---
 
@@ -282,10 +276,7 @@ randoop-cli --repo-url https://github.com/soubhi/BankApplication -k 10
 #### 5. Observe the Output
 The tool will generate successful test sequences and identify any error-prone sequences. Below is a live video demo:
 
-<video controls>
-  <source src="assets/github_demo.mp4">
-  Video Demo of Github Application.
-</video>
+![GitHub Application Demo](assets/github_demo.gif)
 
 ---
 
@@ -324,10 +315,7 @@ randoop-cli -f EmployeeApplication.py -k 2
 The tool will generate successful test sequences and identify any error-prone sequences. Below is an example of what you might see, followed by a live video demo:
 ![Randoop CLI in Action for Employee Application ](assets/employee_output.png)
 
-<video controls>
-  <source src="assets/employee_demo.mp4">
-  Video Demo of Employee Application.
-</video>
+![GitHub Application Demo](assets/employee_demo.gif)
 
 ---
 
