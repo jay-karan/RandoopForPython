@@ -2,7 +2,7 @@ import click
 from pathlib import Path
 from .module_loader import load_module
 from .class_inspection import get_classes
-from .test_generator import randoop_test_generator, write_test_cases
+from .test_generator import randoop_test_generator, write_regression_tests
 import time
 from rich.console import Console
 from rich.progress import Progress
@@ -22,7 +22,7 @@ def simulate_loading(task_name, steps=5, delay=0.5):
     "-k",
     "--sequence-length",
     type=int,
-    default=2,
+    default=10,
     help="Number of times to extend the sequence (default: 2)",
     show_default=True,
 )
@@ -44,37 +44,23 @@ def main(sequence_length, file_path):
     # Simulate loading for class inspection
     simulate_loading("Inspecting classes")
     classes = get_classes(module)
-    class_name_map = {str(cls): name for name, cls in classes}
+
     if not classes:
         console.print(f"[bold red]No classes found in '{file_path}'.[/bold red]")
         exit(1)
 
     # Simulate loading for test generation
     simulate_loading("Generating Random tests")
-    sequences, error_prone_cases, storage, instance_creation_data  = randoop_test_generator(classes, sequence_length)
-    # Write the tests to a file
-    write_test_cases(
-        sequences=sequences,
-        storage=storage,
-        module_name=module.__name__,
-        file_path=file_path,
-        instance_creation_data=instance_creation_data
-    )
+    test_results = randoop_test_generator(classes, sequence_length)
+
     # Display Successful Sequences
-    # console.print("\n[bold green]Successful Sequences:[/bold green]")
-    # for sequence in sequences:
-    #     for cls_name, method_name, args, result in sequence:
-    #         console.print(f"[green]{cls_name}.{method_name}({args}) -> {result}[/green]")
+    print("\n-----> Generated Instances and Sequences:")
+    for seq in test_results["sequences"]:
+        print(seq)
 
-    # # Display Error-Prone Sequences
-    # console.print("\n[bold yellow]Error-Prone Sequences:[/bold yellow]")
-    # for each_error_prone_case in error_prone_cases:
-    #     for cls_name, method_name, args, error in each_error_prone_case:
-    #         console.print(f"[yellow]{cls_name}.{method_name}({args}) -> Error: {error}[/yellow]")
-
-    # Simulate loading for writing regression tests
-    # simulate_loading("Writing regression tests")
-    # write_regression_tests(sequences, module.__name__, file_path)
+    print("\n-----> Error-Prone Test Cases:")
+    for error in test_results["error_cases"]:
+        print(error)
 
     console.print("[bold green]All tasks completed successfully![/bold green]")
 
