@@ -8,7 +8,7 @@ This project implements a Python-based tool for generating **Randoop-style tests
 
 With features like **dynamic method inspection**, **random data generation**, and **error handling for invalid cases**, this tool is ideal for automating the testing process in Python.
 
-![Randoop CLI in Action](assets/calculator_output.png)
+
 
 ---
 
@@ -20,7 +20,7 @@ With features like **dynamic method inspection**, **random data generation**, an
 - **Regression Test Generation**: Automatically writes successful test cases to a file in `pytest` format for reuse.
 - **Rich CLI Interface**: A visually appealing command-line interface built with the `rich` library, including progress bars and logs.
 - **Supports Custom Data Types**: Extensible to handle custom parameter types or annotations.
-
+- **Support for Tests on GitHub Repositories**: The GitHub package will be cloned locally, and a dependency graph will be generated using Topological Sorting and Depth-First Search (DFS) to analyze imports across various Python files. The execution flow will be determined based on this dependency graph.
 ---
 
 ### **How It Works**
@@ -102,21 +102,16 @@ randoop-cli -f <path-to-python-file> -k <sequence-length>
 - **`-f`**: Path to the Python file containing the class definitions.
 - **`-k`**: (Optional) Number of test sequences to generate (default: `2`).
 
----
+Please refer to the **Demo Section** of this Readme to run the default applications from the package.
 
-#### **Examples**
+For running it over a Github Repo, you can use the below style of command:
+```bash
+randoop-cli --repo-url <repo-url> -k <sequence-length>
+```
 
-1. **Basic Usage**:
-   ```bash
-   randoop-cli -f example_classes.py
-   ```
-   This generates test sequences for the `example_classes.py` file with the default sequence length of 2.
+We have created a simulated banking application GitHub repository for testing purposes, which you can find here: [BankApplication](https://github.com/soubhi/BankApplication). A demo is provided below.
 
-2. **Specify Sequence Length**:
-   ```bash
-   randoop-cli -f example_classes.py -k 5
-   ```
-   This generates 5 test sequences.
+Additionally, you can specify multiple files simultaneously by using multiple `-f` parameters in the command.
 
 ---
 
@@ -143,29 +138,8 @@ With the CLI installed, integrating Randoop-style test generation into your deve
 
 - **Dynamic Class Inspection**: Supports any Python class with methods.
 - **Primitive Data Types**: Handles `int`, `float`, and `str` parameters.
-- **Custom Classes**: Placeholder support for custom parameter types (returns `None`).
+- **Non Primitive Data Types**: Handles the instances of other classes as parameters.
 
----
-
-### **Future Enhancements**
-
-1. **Support for Complex Data Types**:
-   - Add support for lists, dictionaries, and user-defined types in method parameters.
-
-2. **Enhanced Random Value Generation**:
-   - Integrate libraries like `faker` for richer and more realistic test data.
-
-3. **Improved Error Handling**:
-   - Add detailed stack traces for error-prone cases.
-
-4. **Sequence Optimization**:
-   - Implement smarter test generation strategies to cover edge cases efficiently.
-
-5. **Test Coverage Analysis**:
-   - Include a built-in module for measuring code coverage of generated tests.
-
-6. **GUI Support**:
-   - Add a graphical user interface for easier usage and configuration.
 
 ---
 
@@ -182,7 +156,52 @@ With the CLI installed, integrating Randoop-style test generation into your deve
 ```
 
 ---
-### **Example Execution (Banking Application)**
+
+### **Demo of Randoop on Calculator Application - Primitive Types**
+
+Follow the steps below to execute the tool for generating tests for a hypothetical `CalculatorApplication.py`:
+
+#### 1. Clone the Repository
+First, clone the repository to your local machine using:
+
+```bash
+git clone https://github.com/jay-karan/RandoopForPython.git
+```
+
+#### 2. Navigate to the Project Directory
+Move into the project's directory:
+
+```bash
+cd RandoopForPython
+```
+
+#### 3. Install the Tool
+Install the tool and its dependencies using `pip`:
+
+```bash
+pip install rich tqdm pytest coverage
+pip install .
+```
+
+#### 4. Run the Randoop-Style Test Generator
+Execute the CLI tool for your `CalculatorApplication.py` file. The `-f` flag specifies the Python file with class definitions, and the `-k` flag specifies the number of sequence generations:
+
+```bash
+randoop-cli -f CalculatorApplication.py -k 10
+```
+
+#### 5. Observe the Output
+The tool will generate successful test sequences and identify any error-prone sequences. Below is an example of what you might see, followed by a live video demo:
+![Randoop CLI in Action for Calculator Application](assets/calculator_output.png)
+
+<video controls>
+  <source src="assets/calculator_demo.mp4">
+  Video Demo of Calculator Application.
+</video>
+
+---
+
+### **Demo of Randoop on Banking Application - Non-Primitive Type**
 
 Follow the steps below to execute the tool for generating tests for a hypothetical `BankingApplication.py`:
 
@@ -212,19 +231,103 @@ pip install .
 Execute the CLI tool for your `BankingApplication.py` file. The `-f` flag specifies the Python file with class definitions, and the `-k` flag specifies the number of sequence generations:
 
 ```bash
-randoop-cli -f BankingApplication.py -k 15
+randoop-cli -f BankingApplication.py -k 10
 ```
 
 #### 5. Observe the Output
-The tool will generate successful test sequences and identify any error-prone sequences. Below is an example of what you might see:
-![Randoop CLI in Action fot Banking Application](assets/calculator_output.png)
+The tool will generate successful test sequences and identify any error-prone sequences. Below is an example of what you might see, followed by a live video demo:
+![Randoop CLI in Action for Banking Application ](assets/banking_output.png)
 
-#### 6. Run Generated Regression Tests
-You can now run the generated `regression_tests.py` using `pytest` to verify correctness:
+<video controls>
+  <source src="assets/banking_demo.mp4">
+  Video Demo of Banking Application.
+</video>
+
+---
+
+
+### **Demo of Randoop on a Github Application - Non-Primitive Type**
+
+Follow the steps below to execute the tool for generating tests on a github project `https://github.com/soubhi/BankApplication`:
+
+#### 1. Clone the Repository
+First, clone the repository to your local machine using:
 
 ```bash
-pytest regression_tests.py
+git clone https://github.com/jay-karan/RandoopForPython.git
 ```
+
+#### 2. Navigate to the Project Directory
+Move into the project's directory:
+
+```bash
+cd RandoopForPython
+```
+
+#### 3. Install the Tool
+Install the tool and its dependencies using `pip`:
+
+```bash
+pip install rich tqdm pytest coverage
+pip install .
+```
+
+#### 4. Run the Randoop-Style Test Generator
+Execute the CLI tool for your `https://github.com/soubhi/BankApplication` link. The `--repo-url` flag specifies link for your application:
+
+```bash
+randoop-cli --repo-url https://github.com/soubhi/BankApplication -k 10
+```
+
+#### 5. Observe the Output
+The tool will generate successful test sequences and identify any error-prone sequences. Below is a live video demo:
+
+<video controls>
+  <source src="assets/github_demo.mp4">
+  Video Demo of Github Application.
+</video>
+
+---
+
+### **Demo of Randoop on an Employee Application - Non-Primitive Type**
+
+#### 1. Clone the Repository
+First, clone the repository to your local machine using:
+
+```bash
+git clone https://github.com/jay-karan/RandoopForPython.git
+```
+
+#### 2. Navigate to the Project Directory
+Move into the project's directory:
+
+```bash
+cd RandoopForPython
+```
+
+#### 3. Install the Tool
+Install the tool and its dependencies using `pip`:
+
+```bash
+pip install rich tqdm pytest coverage
+pip install .
+```
+
+#### 4. Run the Randoop-Style Test Generator
+Execute the CLI tool for your `EmployeeApplication.py` file. The `-f` flag specifies the Python file with class definitions, and the `-k` flag specifies the number of sequence generations:
+
+```bash
+randoop-cli -f EmployeeApplication.py -k 2
+```
+
+#### 5. Observe the Output
+The tool will generate successful test sequences and identify any error-prone sequences. Below is an example of what you might see, followed by a live video demo:
+![Randoop CLI in Action for Employee Application ](assets/employee_output.png)
+
+<video controls>
+  <source src="assets/employee_demo.mp4">
+  Video Demo of Employee Application.
+</video>
 
 ---
 
