@@ -187,6 +187,17 @@ def main(sequence_length, repo_url, file_paths):
             all_classes, sequence_length
         )
 
+        # Display Successful Sequences
+        console.print("\n[bold green]-----> Generated Instances and Sequences:[/bold green]")
+        for seq in sequences:
+            print(seq)
+
+        # Display Error-Prone Test Cases
+        console.print("\n[bold yellow]-----> Error-Prone Test Cases:[/bold yellow]")
+        for error in error_prone_cases:
+            print(error)
+
+
         # Write test cases
         write_test_cases(
             sequences=sequences,

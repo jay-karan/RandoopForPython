@@ -2,8 +2,8 @@ import pytest
 from combined_test_cases import *
 
 # Initialize instances
-Person_1 = Person('kQUdB', -46)
-Company_1 = Company('zysRN')
+Person_1 = Person('woARN', -85)
+Company_1 = Company('dDveR')
 
 # Test cases
 def test_Company_add_employee_0():
