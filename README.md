@@ -235,6 +235,50 @@ Contributions are welcome! To contribute:
 
 ---
 
+## **Limitations**
+
+#### **1. Limited Support for Complex Data Types**
+- **Current Scope**: The tool effectively handles primitive and non-primitive data types like integers, floats, strings, and other classes.
+- **Limitation**: It struggles with more complex data types such as images, videos, or other unstructured data as method arguments.
+- **Impact**: Methods requiring these data types cannot be tested comprehensively.
+
+#### **2. Challenges with Stateful Methods**
+- **Current Scope**: The tool can invoke methods in sequence but does not track or adapt to state changes effectively.
+- **Limitation**: Methods that depend on an object's internal state may produce invalid results or exceptions if called out of sequence.
+- **Impact**: Tests may fail due to incorrect assumptions about method invocation order, rather than actual code errors.
+
+#### **3. Handling of Exceptions**
+- **Current Scope**: The tool logs exceptions encountered during test generation.
+- **Limitation**: Limited analysis of exceptions is performed. Exceptions are logged but not categorized or analyzed for patterns.
+- **Impact**: Developers must manually review exceptions to understand their causes and significance.
+
+#### **4. Redundancy in Generated Tests**
+- **Current Scope**: Test generation relies on randomness, often leading to repetitive or redundant tests.
+- **Limitation**: Many generated test cases are duplicates or test the same functionality with slight variations in inputs.
+- **Impact**: Results in unnecessary bloating of the regression test file, making it harder to review or maintain.
+
+#### **5. No Test Case Prioritization**
+- **Current Scope**: The tool generates test cases sequentially without considering test priority or impact.
+- **Limitation**: High-priority methods or critical paths are not given precedence over less impactful ones.
+- **Impact**: Test coverage may not align with the actual importance of features or code segments.
+
+#### **6. Limited Scalability**
+- **Current Scope**: Suitable for small to medium-sized projects.
+- **Limitation**: Performance may degrade when handling large or complex codebases with multiple interdependent classes.
+- **Impact**: Generates incomplete or suboptimal test cases for large projects.
+
+---
+
+## **Future Work and Improvements**
+
+To address these limitations, the following enhancements are proposed:
+1. Implement advanced data generation strategies for complex and nested data types.
+2. Add edge case generation algorithms to complement random input generation.
+3. Develop a state-aware testing mechanism for state-dependent methods.
+4. Enhance exception handling by categorizing and analyzing exceptions.
+
+---
+
 ## **License**
 
 This project is licensed under the MIT License.
