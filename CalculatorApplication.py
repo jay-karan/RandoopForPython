@@ -35,4 +35,3 @@ class Calculator:
         if a < 0:
             raise ValueError("Cannot calculate the square root of a negative number.")
         return self.format_result(a ** 0.5)
-
