@@ -28,55 +28,52 @@ def simulate_loading(task_name, steps=5, delay=0.5):
 )
 @click.option(
     "-f",
-    "--file-path",
+    "--file-paths",
     type=click.Path(exists=True, file_okay=True, dir_okay=False, path_type=Path),
+    multiple=True,
     required=True,
-    help="Path to the Python file with class definitions",
+    help="Paths to the Python files with class definitions",
 )
-def main(sequence_length, file_path):
+def main(sequence_length, file_paths):
     """Python Randoop test generator for Python classes."""
     console.print("[bold blue]Randoop-Python Test Generator[/bold blue]\n")
 
-    # Simulate loading for module loading
-    simulate_loading("Loading module")
-    module = load_module(file_path)
+    # Load all modules into a shared namespace
+    shared_namespace = {}
+    for file_path in file_paths:
+        console.print(f"\n[bold yellow]Processing file: {file_path}[/bold yellow]\n")
+        simulate_loading("Loading module")
+        module = load_module(file_path, namespace=shared_namespace)
 
-    # Simulate loading for class inspection
+    # Inspect classes across all loaded modules
     simulate_loading("Inspecting classes")
-    classes = get_classes(module)
-    class_name_map = {str(cls): name for name, cls in classes}
-    if not classes:
-        console.print(f"[bold red]No classes found in '{file_path}'.[/bold red]")
+    all_classes = []
+    for name, obj in shared_namespace.items():
+        if isinstance(obj, type):  # Ensure it's a class type
+            all_classes.append((name, obj))
+
+    if not all_classes:
+        console.print("[bold red]No classes found in the provided files.[/bold red]")
         exit(1)
 
-    # Simulate loading for test generation
+    # Generate tests
     simulate_loading("Generating Random tests")
-    sequences, error_prone_cases, storage, instance_creation_data  = randoop_test_generator(classes, sequence_length)
-    # Write the tests to a file
+    sequences, error_prone_cases, storage, instance_creation_data = randoop_test_generator(
+        all_classes, sequence_length
+    )
+
+    # Write test cases
     write_test_cases(
         sequences=sequences,
         storage=storage,
-        module_name=module.__name__,
-        file_path=file_path,
-        instance_creation_data=instance_creation_data
+        module_name="combined_namespace",
+        file_path="combined_test_cases.py",
+        instance_creation_data=instance_creation_data,
     )
-    # Display Successful Sequences
-    # console.print("\n[bold green]Successful Sequences:[/bold green]")
-    # for sequence in sequences:
-    #     for cls_name, method_name, args, result in sequence:
-    #         console.print(f"[green]{cls_name}.{method_name}({args}) -> {result}[/green]")
-
-    # # Display Error-Prone Sequences
-    # console.print("\n[bold yellow]Error-Prone Sequences:[/bold yellow]")
-    # for each_error_prone_case in error_prone_cases:
-    #     for cls_name, method_name, args, error in each_error_prone_case:
-    #         console.print(f"[yellow]{cls_name}.{method_name}({args}) -> Error: {error}[/yellow]")
-
-    # Simulate loading for writing regression tests
-    # simulate_loading("Writing regression tests")
-    # write_regression_tests(sequences, module.__name__, file_path)
 
     console.print("[bold green]All tasks completed successfully![/bold green]")
+
+
 
 if __name__ == "__main__":
     main()
