@@ -7,7 +7,8 @@ import shutil
 from io import BytesIO
 from .module_loader import load_module
 from .class_inspection import get_classes
-from .test_generator import randoop_test_generator, write_test_cases
+from .test_generator import randoop_test_generator, write_regression_tests
+import time
 from rich.console import Console
 from rich.progress import Progress
 import time
@@ -113,7 +114,7 @@ def resolve_dependencies(source_files):
     "-k",
     "--sequence-length",
     type=int,
-    default=2,
+    default=10,
     help="Number of times to extend the sequence (default: 2)",
     show_default=True,
 )
@@ -213,7 +214,6 @@ def main(sequence_length, repo_url, file_paths):
         # Cleanup temporary directory if used
         if repo_url and temp_dir.exists():
             shutil.rmtree(temp_dir)
-
 
 
 if __name__ == "__main__":
