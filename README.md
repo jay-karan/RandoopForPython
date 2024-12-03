@@ -267,6 +267,11 @@ Contributions are welcome! To contribute:
 - **Limitation**: Performance may degrade when handling large or complex codebases with multiple interdependent classes.
 - **Impact**: Generates incomplete or suboptimal test cases for large projects.
 
+#### **7. Lack of Sequence Persistence**
+- **Current Scope**: The tool successfully generates sequences, reuses non-primitive data types, and employs feedback mechanisms to enhance test generation.
+- **Limitation**: It currently does not support writing the generated sequences to a file for reuse or further analysis.
+- **Impact**: Generated sequences are lost after execution, preventing long-term utilization or manual review of test cases.
+
 ---
 
 ## **Future Work and Improvements**
